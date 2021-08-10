@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Example - Stopwatch animation</title>
+    <style>
+        #my-canvas {
+            border: #cacaca 1px solid;
+            background-image: url(clock.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="my-canvas" width="400" height="300">
+        Your web browser does not support canvas element.
+    </canvas>
+    <script>
+        window.onload = draw;
+        function draw() {
+            let myCanvas = document.getElementById("my-canvas");
+            if (myCanvas.getContext) {
+                let ctx = myCanvas.getContext('2d');
+
+
+
+                update(ctx);
+
+            } else {
+                alert("Canvas is not supported.");
+            }
+        }
+
+
+        function update(ctx) {
+
+            var now = new Date();
+
+
+
+            var h = now.getHours();
+
+            var m = now.getMinutes()
+            var s = now.getSeconds();
+
+
+            ctx.save();
+            ctx.clearRect(0, 0, 400, 300);
+            ctx.beginPath();
+            ctx.arc(200, 150, 140, 0, 2 * Math.PI);
+
+            ctx.closePath();
+            ctx.stroke();
+
+            ctx.translate(200, 150);
+            ctx.rotate(ctx.rotate(s * Math.PI / 30));
+
+            ctx.translate(-200, -150);
+            ctx.beginPath();
+            ctx.moveTo(200, 150);
+            ctx.lineTo(200, 30);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(200, 150);
+
+            ctx.rotate(ctx.rotate(m * Math.PI / 30 + s * Math.PI / 1800));
+            ctx.translate(-200, -150);
+            ctx.beginPath();
+            ctx.moveTo(200, 150);
+            ctx.lineTo(200, 50);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.restore();
+
+
+            ctx.save();
+            ctx.translate(200, 150);
+
+            ctx.rotate(h % 12 * Math.PI / 6 + m * Math.PI / 360 + s * Math.PI / 21600);
+            ctx.translate(-200, -150);
+            ctx.beginPath();
+            ctx.moveTo(200, 150);
+            ctx.lineTo(200, 80);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.restore();
+
+
+
+
+
+            requestId = requestAnimationFrame(function () {
+                update(ctx);
+            });
+        }
+
+    </script>
+</body>
+
+</html>
